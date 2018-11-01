@@ -4,8 +4,11 @@ import json
 brands = ["HELLA" , "GAUGE", "T.BOSCH", "IFC", "HIBARI", "AHT", "NEWSUN" , "TORICA", "ICHIBAN", "FV", "FIC", "DT", "NPC", "YWK", "BOSCH", "SANKEI", "NARVA", "DIAMOND", "KOYO", "TOYOPOWER", "OSIS", "BTK", "AUTO BULB VEK TRA", "NAPCO", "SNR", "EXACT", "OSK", "RENAULT", "DODUCO", "AISAN", "TSK", "NAKAMOTO", "HERKO", "AIRTEX", "RIK", "VALEO", "TOTO", "FAE", "AWP", "RAON", "BISSC", "DEUSIC", "MOBIS", "GM", "EKKO", "LOCTITE", "MIQUINI", "JIU JIU", "BGF", "A1", "TP", "PERFECT", "BROSOL", "I&R", "SHIBUMI", "NEW ERA", "FACET", "ASIA-INC", "INFAC", "CHAIN", "KOS", "NTN", "FAG", "TW", "KOSYN", "COGEFA", "NECCO", "AUTOLITE", "AMERICAN EAGLE", "NATSUKI", "SUN", "REVVSUN", "NOK", "DAIDO", "BRIKE", "MOTORCRAFT", "KYOSAN", "NGK", "NGK", "ECLIPSE", "CENTURY", "CONTITECH", "DAEWHA", "MASTER POWER INJECTIONS", "TRIDON", "NEW COO", "GMB", "TAMA", "GEN", "PUNTO ROJO", "TRANSPO", "NAGARES", "DENSO", "KMC", "MANDO", "NPW", "NAMCCO", "NACHI", "PHOENIX", "SOFABEX", "IRAUTO", "REGITAR", "NPR", "GATES", "GENUINE PARTS", "YEC", "YSK", "JGK", "DIAMON", "ASHIMORI", "NSK"]
 #EXCEPTION INSTALACION DE ALTA - REPARACION, REP -> KIT REPARACION - BOMBA -> AGUA, GASOLINA *COMBUSTIBLE ACEITE CLUTCH - IF NARVA -> BOMBILLO - MEDIA LUNA - BASE * BASE Y PUNZON - BUJIAS - DISCRO FRENO - CAJA CAJA DIRECCION - KIT - KIT DE REPARACION
 types = ["CHICLER", "CORNETAS", "INSTALACION", "PITO", "CORNETA", "MOTOVENTILADOR", "SWITCH", "CRUCETA", "REPARACION", "BOBINA", "CADENA", "IMPULSADOR", "RODAMIENTO", "RETEN", "BIELETA", "BOMBILLO", "CORREA", "PISTONES", "CASQUETES", "ROTOR", "MEDIA LUNA", "TENSOR", "VALVULA", "RADIADOR", "GUIA", "BOCIN", "PLATINO", "GUAYA", "INYECTOR", "ANILLOS", "TERMOSTATO", "PERA", "MODULO", "ELEVADOR", "CONDENSADOR", "BUJIA", "BALINERA", "SENSOR", "PUNZON", "FILTRO", "PUNTA", "SILICONA", "MOTOR", "AMORTIGUADOR", "PLUMILLAS", "SOPORTE", "DISCO", "MUNECO", "CAJA", "DISYUNTOR", "PINON", "TIJERA", "FLASHER", "MANDO", "CAUCHOS", "TAPA", "CIGUENAL"]
-#EXCEPTION TROOP -> TROOPER - R-4 R-12 R-9 R-18 -> RENAULT - GRAND VITARA -> CHEVROLET - TOY. - M323 MAZ. 323 ALEGRO 626-> MAZDA - SUZ ->SUZUKI - DAE -> DAEWOO
-cars = ["FORD", "LUV", "KIA", "ESTEEM", "TOYOTA", "DAEWOO", "" ]
+#EXCEPTION TROOP -> TROOPER - R-4 R-12 R-9 R-18 -> RENAULT - GRAND VITARA LUV ESTEEM-> CHEVROLET - TOY. - M323 MAZ. 323 ALEGRO 626 -> MAZDA - SUZ ->SUZUKI - DAE -> DAEWOO -> NUBIRA - HYUNDAI - ELANTRA VERNA ACCENT GYRO TERRACAN GETZ VISION GRAND STAREX TUCSON SPORTAGE ATOS  - NISSAN -> X-TRAIL X-TERRA MURANO 
+cars = ["FORD", "RENAULT", "MAZDA", "SUZUKI", "DAEWOO", "HYUNDAI", "NISSAN", "TOYOTA", "FORD", "KIA", "MITSUBISHI", "HONDA", "SKODA", "DODGE", "CHEVROLET" ]
+#EXCEPTION GRAND
+models = { "RENAULT": ["MEGANE", "R-4", "R-12", "R-9", "R-18", "DUSTER", "KOLEOS", "LOGAN", "SYMBOL", "TWINGO", "CLIO" ], "CHEVROLET": ["TROOPER","SPARK", "D-MAX", "OPTRA", "CAPTIVA","AVEO","GRAND-VITARA", "LUV", "LUV-1.6", "LUV-2.3", "LUV-2.2", "ESTEEM", "N200", "N300", "TRACKER", "SWIFT", "SPRINT", "ALTO", "SONIC", "SUPER-CARRY", "CORSA", "LANOS", "DMAX", "WAGON", "SONIC", "L200", "CRUZE"] , "MAZDA": ["323", "ALLEGRO", "626", "ASAHI", "B2.2", "B2.0", "6", "B2600", "BT-50"] ,"SUZUKI": ["JIMNY", "SAMURAI"] , "DAEWOO": ["NUBIRA", "RACER", "TICO"] , "HYUNDAI": ["ELANTRA", "VERNA", "ACCENT", "GYRO", "TERRACAN", "GETZ", "VISION", "VITARA", "STAREX", "TUCSON", "ATOS", "I10", "XCITE", "EXCELL", "SANTA-FE", "VERNA", "H100"] ,"NISSAN": ["URBAN","TIIDA","X-TRAIL", "X-TERRA", "MURANO", "SENTRA", "PATROL", "VANETTE", "FRONTIER"] ,"TOYOTA": ["COROLLA", "PRADO", "HILUX", "YARIS", "4RUNNER", "LAND-CRUISER", "CAMPERO", "VIGO", "FORTUNER"] ,"FORD": ["FIESTA", "ESCAPE", "ECOSPORT", "FOCUS", "FERTIVA"] ,"KIA": ["SPORTAGE", "RIO", "CERATO", "SOUL", "SEPHIA", "PICANTO", "ION"] ,"MITSUBISHI": ["SPACE", "WAGON", "LANCER", "L2000", "PAJERO", "MONTERO", "HART", "L300", "V6"] ,"HONDA": ["CRV", "CIVIC"] , "PEUGEOT": ["106", "406", "306", "206", "307", "207"] ,"SKODA": ["FABIA"] ,"DODGE": ["JOURNEY"] }
+
 #Creates files inputs
 inv_orig = open("inventario", "r")
 inv_aux = open("inventario_aux", "r")
@@ -89,7 +92,20 @@ def type_search(line):
                     return "BOMBA DE CLUTCH", i
     return "", -1
 
-         
+#search models and brands
+def search_models(line):
+    types = []
+    brands = []
+    for i in range(len(line)):
+        for e in models.keys():
+            if line[i] in models[e]:
+                types.append(line[i])
+                if not e in brands:
+                    brands.append(e)
+        if not brands:
+            if line[i] in cars:
+                brands.append(line[i]) 
+    return brands, types        
 
 
 n_line = 2895
@@ -122,6 +138,8 @@ for _ in range (n_line):
     if num != -1:
         del line[num]
 
-    output.write(p_type + "\n")
+    #add models and brands
+    brand, model = search_models(line)
+    output.write(str(brand) + "\t" + str(model)+ "\n")
     #output.write(brand + "\n")
     #output.write(' '.join(line) + "\n")
