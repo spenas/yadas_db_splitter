@@ -5,10 +5,13 @@ import sys
 reload(sys)  
 sys.setdefaultencoding('utf8')
 
+#PRODUCTS ARRAY
+products = []
+
 #EXCEPTION MIQUNI IS VALID - TIPO FACET VS KOREA - TRIDON VS DIAMON - MATORCRAFT - JIU JIU - NEW ERA - AMERICAN EAGLE - AUTO BULB VEK TRA - MASTER POWER INJECTIONS
 brands = ["HELLA" , "GAUGE", "T.BOSCH", "IFC", "HIBARI", "AHT", "NEWSUN" , "TORICA", "ICHIBAN", "FV", "FIC", "DT", "NPC", "YWK", "BOSCH", "SANKEI", "NARVA", "DIAMOND", "KOYO", "TOYOPOWER", "OSIS", "BTK", "AUTO BULB VEK TRA", "NAPCO", "SNR", "EXACT", "OSK", "RENAULT", "DODUCO", "AISAN", "TSK", "NAKAMOTO", "HERKO", "AIRTEX", "RIK", "VALEO", "TOTO", "FAE", "AWP", "RAON", "BISSC", "DEUSIC", "MOBIS", "GM", "EKKO", "LOCTITE", "MIQUINI", "JIU JIU", "BGF", "A1", "TP", "PERFECT", "BROSOL", "I&R", "SHIBUMI", "NEW ERA", "FACET", "ASIA-INC", "INFAC", "CHAIN", "KOS", "NTN", "FAG", "TW", "KOSYN", "COGEFA", "NECCO", "AUTOLITE", "AMERICAN EAGLE", "NATSUKI", "SUN", "REVVSUN", "NOK", "DAIDO", "BRIKE", "MOTORCRAFT", "KYOSAN", "NGK", "NGK", "ECLIPSE", "CENTURY", "CONTITECH", "DAEWHA", "MASTER POWER INJECTIONS", "TRIDON", "NEW COO", "GMB", "TAMA", "GEN", "PUNTO ROJO", "TRANSPO", "NAGARES", "DENSO", "KMC", "MANDO", "NPW", "NAMCCO", "NACHI", "PHOENIX", "SOFABEX", "IRAUTO", "REGITAR", "NPR", "GATES", "GENUINE PARTS", "YEC", "YSK", "JGK", "DIAMON", "ASHIMORI", "NSK"]
 #EXCEPTION INSTALACION DE ALTA - REPARACION, REP -> KIT REPARACION - BOMBA -> AGUA, GASOLINA *COMBUSTIBLE ACEITE CLUTCH - IF NARVA -> BOMBILLO - MEDIA LUNA - BASE * BASE Y PUNZON - BUJIAS - DISCRO FRENO - CAJA CAJA DIRECCION - KIT - KIT DE REPARACION
-types = ["CHICLER", "CORNETAS", "INSTALACION", "PITO", "CORNETA", "MOTOVENTILADOR", "SWITCH", "CRUCETA", "REPARACION", "BOBINA", "CADENA", "IMPULSADOR", "RODAMIENTO", "RETEN", "BIELETA", "BOMBILLO", "CORREA", "PISTONES", "CASQUETES", "ROTOR", "MEDIA LUNA", "TENSOR", "VALVULA", "RADIADOR", "GUIA", "BOCIN", "PLATINO", "GUAYA", "INYECTOR", "ANILLOS", "TERMOSTATO", "PERA", "MODULO", "ELEVADOR", "CONDENSADOR", "BUJIA", "BALINERA", "SENSOR", "PUNZON", "FILTRO", "PUNTA", "SILICONA", "MOTOR", "AMORTIGUADOR", "PLUMILLAS", "SOPORTE", "DISCO", "MUNECO", "CAJA", "DISYUNTOR", "PINON", "TIJERA", "FLASHER", "MANDO", "CAUCHOS", "TAPA", "CIGUENAL"]
+types = ["CHICLER", "CORNETAS", "INSTALACION", "PITO", "CORNETA", "MOTOVENTILADOR", "SWITCH", "CRUCETA", "BOBINA", "CADENA", "IMPULSADOR", "RODAMIENTO", "RETEN", "BIELETA", "BOMBILLO", "CORREA", "PISTONES", "CASQUETES", "ROTOR", "MEDIA LUNA", "TENSOR", "VALVULA", "RADIADOR", "GUIA", "BOCIN", "PLATINO", "GUAYA", "INYECTOR", "ANILLOS", "TERMOSTATO", "PERA", "MODULO", "ELEVADOR", "CONDENSADOR", "BUJIA", "BALINERA", "SENSOR", "PUNZON", "FILTRO", "PUNTA", "SILICONA", "MOTOR", "AMORTIGUADOR", "PLUMILLAS", "SOPORTE", "DISCO", "MUNECO", "CAJA", "DISYUNTOR", "PINON", "TIJERA", "FLASHER", "MANDO", "CAUCHOS", "TAPA", "CIGUENAL"]
 #EXCEPTION TROOP -> TROOPER - R-4 R-12 R-9 R-18 -> RENAULT - GRAND VITARA LUV ESTEEM-> CHEVROLET - TOY. - M323 MAZ. 323 ALEGRO 626 -> MAZDA - SUZ ->SUZUKI - DAE -> DAEWOO -> NUBIRA - HYUNDAI - ELANTRA VERNA ACCENT GYRO TERRACAN GETZ VISION GRAND STAREX TUCSON SPORTAGE ATOS  - NISSAN -> X-TRAIL X-TERRA MURANO 
 cars = ["FORD", "RENAULT", "MAZDA", "SUZUKI", "DAEWOO", "HYUNDAI", "NISSAN", "TOYOTA", "FORD", "KIA", "MITSUBISHI", "HONDA", "SKODA", "DODGE", "CHEVROLET", "ISUZU", "PULSAR", "DAIHATSU" ]
 #EXCEPTION GRAND
@@ -27,30 +30,29 @@ output = open("output.txt", "w+")
 class Product(object):
     ide = 0
     reference = ''
-    name = ''
+    reference_orig = ''
     brand = ''
     type = ''
     car = ''
     model = ''
     quantity = ''
     price = 0
-    taiwan = False
-    description = ''
+    
 
-    def __init__(self, ide, ref, name, brand, type, car, qty, price, tw, dcr):
+    def __init__(self, ide, ref_o, ref, brand, type, car, qty, price, model):
         self.ide = ide
-        self.reference = ref
-        self.name = name
+        self.reference_orig = ref_o
+        self.reference = reference
         self.brand = brand
         self.type = type
         self.car = car
+        self.model = model
         self.quantity = qty
         self.price = price
-        self.taiwan = tw
-        self.description = dcr
+        
 
-def make_product(ref, ide, name, brand, type, car, qty, price, tw, dcr):
-    product = Product(ref, ide, name, brand, type, car, qty, price, tw, dcr)
+def make_product(ide, ref_o, ref, brand, type, car, qty, price, model):
+    product = Product(ide, ref_o, ref, brand, type, car, qty, price, model)
     return product
 
 def search_references(arr):
@@ -62,7 +64,7 @@ def search_references(arr):
     if  not not ret_arr:
         return ''.join(ret_arr),i
     else:
-        return '', -1
+        return "nil", -1
 
 #method for search brands
 def brand_search(line):
@@ -74,7 +76,7 @@ def brand_search(line):
         else:
             if line[i] in exceptions.keys():
                 return exceptions[line[i]], i 
-    return "",-1
+    return "nil",-1
 
 #search for product types
 def type_search(line):
@@ -95,7 +97,7 @@ def type_search(line):
                     return "BOMBA DE GASOLINA", i
                 elif "CLUTCH" in line:
                     return "BOMBA DE CLUTCH", i
-    return "", -1
+    return "nil", -1
 
 #search models and brands
 def search_models(line):
@@ -113,11 +115,14 @@ def search_models(line):
     return brands, types        
 
 #creation of a chimbo array
-prices= [0]*2895
+prices= [-1]*2895
 
 
 n_line = 2895
 arr_ref = []
+
+#variable qty temporary set to 0
+qty = 0
 #start searching for data, splitting values and asign them into the correct object fields
 for _ in range (n_line):
     
@@ -126,7 +131,7 @@ for _ in range (n_line):
     reference_orig = ' '.join(line_aux)
     arr_ref.append(reference_orig.split())
     line = inv_orig.readline().split()
-    ide = line[0]
+    ide = int(line[0])
     del line[0]
     reference = line[0]
     del line[0]
@@ -150,20 +155,38 @@ for _ in range (n_line):
 
     #add models and brands
     brand, model = search_models(line)
-    #output.write(str(brand) + "\t" + str(model)+ "\n")
-    #output.write(brand + "\n")
+    #output.write(str(brand) + "," + str(model)+ "\n")
+
+    #make product object with the parameters except price and qty
+    product = make_product(ide, reference_orig, total_ref, brand, p_type, brand, qty, -1, model)
+    products.append(product)
     #output.write(' '.join(line) + "\n")
-"""
-a = jeisson_data[1]
-stri = a["IdInventario"].encode("utf-8")
-stri2 = "K20HR-U11  BUJIA DENSO JAPON"
-print stri.split()
-"""
+
+
 
 for i in jeisson_data:
     if i["IdInventario"].split() in arr_ref:
         pos = arr_ref.index(i["IdInventario"].split())
-        prices[pos] = i["Precio1"]
+        if "," in i["Precio1"]:
+            precio = str(i["Precio1"]).replace(",","")
+        products[pos].price = float(precio)
 
-for i in prices:
-    output.write(str(i) + "\n")
+"""
+ides = []
+ref_orig = []
+ref =[]
+brands = []
+types = []
+cars = []
+models = []
+quantities = [0] * 2895
+prices = []
+"""
+
+
+for i in products:
+    
+    output.write("["+str(i.ide) + "," + "'" +i.reference + "'" + "," +"'"+ i.reference_orig + "'" + ","+ str(i.brand) + "," +"'"+ i.type + "'" +"," + str(i.car) + "," + str(i.model) + "," + str(i.price) + "]" + "," +"\n")
+
+
+   
