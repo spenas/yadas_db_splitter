@@ -67,4 +67,4 @@ with open("detalles.csv") as csv_file:
             cont += 1       
 
 for i in clients:
-    output.write("[" + i.ide + "," +  "'" + i.name + "'" + "," + "'" + i.city + "'" + "," + "'" + i.address + "'" + "," + "'" + i.zone + "'" + "," + i.telephone + "," + "'" + i.email + "'" +"]" + "," + "\n")    
+    output.write("[" + i.ide + "," +  "'" + i.name + "'" + "," + "'" + i.city + "'" + "," + "'" + i.address + "'" + "," + "'" + i.zone + "'" + "," + "'" +  i.telephone +"'"+ "," + "'" + i.email + "'" +"]" + "," + "\n")    
