@@ -8,6 +8,12 @@ sys.setdefaultencoding('utf8')
 #PRODUCTS ARRAY
 products = []
 
+#HASH BARCODES
+codes = dict()
+
+codes_o = []
+
+
 #EXCEPTION MIQUNI IS VALID - TIPO FACET VS KOREA - TRIDON VS DIAMON - MATORCRAFT - JIU JIU - NEW ERA - AMERICAN EAGLE - AUTO BULB VEK TRA - MASTER POWER INJECTIONS
 brands = ["HELLA" , "GAUGE", "T.BOSCH", "IFC", "HIBARI", "AHT", "NEWSUN" , "TORICA", "ICHIBAN", "FV", "FIC", "DT", "NPC", "YWK", "BOSCH", "SANKEI", "NARVA", "DIAMOND", "KOYO", "TOYOPOWER", "OSIS", "BTK", "AUTO BULB VEK TRA", "NAPCO", "SNR", "EXACT", "OSK", "RENAULT", "DODUCO", "AISAN", "TSK", "NAKAMOTO", "HERKO", "AIRTEX", "RIK", "VALEO", "TOTO", "FAE", "AWP", "RAON", "BISSC", "DEUSIC", "MOBIS", "GM", "EKKO", "LOCTITE", "MIQUINI", "JIU JIU", "BGF", "A1", "TP", "PERFECT", "BROSOL", "I&R", "SHIBUMI", "NEW ERA", "FACET", "ASIA-INC", "INFAC", "CHAIN", "KOS", "NTN", "FAG", "TW", "KOSYN", "COGEFA", "NECCO", "AUTOLITE", "AMERICAN EAGLE", "NATSUKI", "SUN", "REVVSUN", "NOK", "DAIDO", "BRIKE", "MOTORCRAFT", "KYOSAN", "NGK", "NGK", "ECLIPSE", "CENTURY", "CONTITECH", "DAEWHA", "MASTER POWER INJECTIONS", "TRIDON", "NEW COO", "GMB", "TAMA", "GEN", "PUNTO ROJO", "TRANSPO", "NAGARES", "DENSO", "KMC", "MANDO", "NPW", "NAMCCO", "NACHI", "PHOENIX", "SOFABEX", "IRAUTO", "REGITAR", "NPR", "GATES", "GENUINE PARTS", "YEC", "YSK", "JGK", "DIAMON", "ASHIMORI", "NSK"]
 #EXCEPTION INSTALACION DE ALTA - REPARACION, REP -> KIT REPARACION - BOMBA -> AGUA, GASOLINA *COMBUSTIBLE ACEITE CLUTCH - IF NARVA -> BOMBILLO - MEDIA LUNA - BASE * BASE Y PUNZON - BUJIAS - DISCRO FRENO - CAJA CAJA DIRECCION - KIT - KIT DE REPARACION
@@ -20,6 +26,8 @@ models = {"DAIHATSU": ["TERIOS", "DELTA", "F20"], "RENAULT": ["MEGANE", "R-4", "
 #Creates files inputs
 inv_orig = open("inventario", "r")
 inv_aux = open("inventario_aux", "r")
+bars = open("cod_barras", "r")
+cod_orig = open("codigos_orig", "r")
 with open('preciosJSON.json') as json_data:
     jeisson_data = json.load(json_data)
 
@@ -31,6 +39,8 @@ class Product(object):
     ide = 0
     reference = ''
     reference_orig = ''
+    cod_orig = ''
+    bar_c = ''
     brand = ''
     type = ''
     car = ''
@@ -39,20 +49,22 @@ class Product(object):
     price = 0
     
 
-    def __init__(self, ide, ref_o, ref, brand, type, car, qty, price, model):
+    def __init__(self, ide, ref_o, ref, bar_c, brand, type, car, qty, price, model, cod_orig):
         self.ide = ide
         self.reference_orig = ref_o
-        self.reference = reference
+        self.reference = ref
+        self.bar_c = bar_c
         self.brand = brand
         self.type = type
         self.car = car
         self.model = model
         self.quantity = qty
         self.price = price
+        self.cod_orig = cod_orig
         
 
-def make_product(ide, ref_o, ref, brand, type, car, qty, price, model):
-    product = Product(ide, ref_o, ref, brand, type, car, qty, price, model)
+def make_product(ide, ref_o, ref, brand, type, car, qty, price, model, bar, cod_orig):
+    product = Product(ide, ref_o, ref, bar , brand, type, car, qty, price, model, cod_orig)
     return product
 
 def search_references(arr):
@@ -69,7 +81,6 @@ def search_references(arr):
 #method for search brands
 def brand_search(line):
     exceptions = {"JIU":"JIU JIU", "NEW": "NEW ERA", "AMERICAN": "AMERICAN EAGLE", "AUTO": "AUTO BULB VEK TRA", "MASTER": "MASTER POWER INJECTION"}
-    brand = ''
     for i in range(len(line)):
         if line[i] in brands:
             return line[i], i
@@ -81,7 +92,6 @@ def brand_search(line):
 #search for product types
 def type_search(line):
     exceptions = {"COMANDO": "COMANDO LUCES", "EJE": "EJE DE LEVAS", "INSTALACION": "INSTALACION DE ALTA", "REPARACION": "KIT DE REPARACION", "REP.": "KIT DE REPRACION", "KIT": "KIT DE REPARACION", "MEDIA": "MEDIA LUNA", "FRENO": "DISCO FRENO", "CAJA": "CAJA DE DIRECCION"}
-    p_type = ''
     for i in range(len(line)):
         if line[i] in types:
             return line[i], i
@@ -113,6 +123,19 @@ def search_models(line):
             if line[i] in cars:
                 brands.append(line[i]) 
     return brands, types        
+
+#creation of a hash of barcodes
+
+for _ in range(935):
+    lien = bars.readline().split(";")
+    codes[int(lien[0])] = lien[1].strip()
+
+#creation of original refeences array
+
+for _ in range(3983):
+    lien = cod_orig.readline().strip()
+    codes_o.append(lien)
+    print lien
 
 #creation of a chimbo array
 prices= [-1]*2895
@@ -154,11 +177,14 @@ for _ in range (n_line):
         del line[num]
 
     #add models and brands
-    brand, model = search_models(line)
-    #output.write(str(brand) + "," + str(model)+ "\n")
+    car, model = search_models(line)
+    
+    barcode = ''
+    if ide in codes:
+        barcode = codes[ide]
 
     #make product object with the parameters except price and qty
-    product = make_product(ide, reference_orig, total_ref, brand, p_type, brand, qty, -1, model)
+    product = make_product(ide, reference_orig, "", brand, p_type, car, qty, -1, model, barcode, "")
     products.append(product)
     #output.write(' '.join(line) + "\n")
 
@@ -171,22 +197,16 @@ for i in jeisson_data:
             precio = str(i["Precio1"]).replace(",","")
         products[pos].price = float(precio)
 
-"""
-ides = []
-ref_orig = []
-ref =[]
-brands = []
-types = []
-cars = []
-models = []
-quantities = [0] * 2895
-prices = []
-"""
 
+for i in range(len(products)):
+    aux = products[i].reference_orig
+    for x in codes_o:
+        if aux.find(x) != -1:
+            products[i].reference = x
 
 for i in products:
     
-    output.write("["+str(i.ide) + "," + "'" +i.reference + "'" + "," +"'"+ i.reference_orig + "'" + ","+ str(i.brand) + "," +"'"+ i.type + "'" +"," + str(i.car) + "," + str(i.model) + "," + str(i.price) + "]" + "," +"\n")
+    output.write("["+str(i.ide) + "," + "'" +i.reference + "'" + "," +"'"+ i.reference_orig + "'" + ","+"'" +str(i.brand) +"'" +"," +"'"+ i.type + "'" +"," + str(i.car) + "," + str(i.model) + "," + str(i.price)+ "," + "'" + i.bar_c + "'"  + "]"  + "," +"\n")
 
 
    
